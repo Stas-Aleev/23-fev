@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Квест на 23 февраля</title>
+    <style>
+      body {
+        font-family: "Arial";
+        background: #2d3e2d;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+      #game {
+        max-width: 500px;
+        margin: 0 auto;
+        background: #4a5f4a;
+        padding: 30px;
+        border-radius: 20px;
+        border: 3px solid #6b8f6b;
+      }
+      img {
+        width: 100%;
+        border-radius: 15px;
+        margin: 10px 0;
+        border: 2px solid #b3a35c;
+      }
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        margin: 10px 0;
+        background: #8b7a3c;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .btn:hover {
+        background: #b3a35c;
+        transform: scale(1.02);
+      }
+      #step-counter {
+        color: #b3a35c;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game">
+      <div id="step-counter">Шаг 1 из 5</div>
+      <h2 id="title">Заголовок</h2>
+      <img id="image" src="" alt="Картинка" />
+      <p id="text">Текст задания</p>
+      <div id="buttons"></div>
+    </div>
+
+    <script>
+      // ==========================================
+      // ЗДЕСЬ ТВОЙ СЦЕНАРИЙ (меняй только этот блок!)
+      // ==========================================
+      const steps = {
+        1: {
+          title: "✅ Штаб",
+          img: "https://i.pinimg.com/736x/xx/xx/1.jpg", // Сюда ссылку на картинку
+          text: "Товарищ! Рация шифрует сигнал. Введите пароль (подсказка: год рождения командира)",
+          buttons: [
+            { text: "1985", next: 2 },
+            { text: "1990", next: 1 } // если неправильно — остаётся на 1 шаге
+          ]
+        },
+        2: {
+          title: "🌲 Секретная поляна",
+          img: "https://i.pinimg.com/736x/xx/xx/2.jpg",
+          text: "Перед тобой три тропы. Куда идти?",
+          buttons: [
+            { text: "Прямо (овраг)", next: 3 },
+            { text: "Налево (болото)", next: 3 },
+            { text: "Направо (гора)", next: 3 }
+          ]
+        },
+        3: {
+          title: "💣 Овраг",
+          img: "https://i.pinimg.com/736x/xx/xx/3.jpg",
+          text: "Ты нашёл ящик! Чтобы его открыть, твоя команда должна сказать: 'С 23 Февраля!'",
+          buttons: [{ text: "Сказать!", next: 4 }]
+        },
+        4: {
+          title: "🏖️ Пляж Геленджика",
+          img: "https://i.pinimg.com/736x/xx/xx/4.jpg",
+          text: "Враг рядом! Что делаем?",
+          buttons: [
+            { text: "Кричим 'Ура!' и бежим", next: 5 },
+            { text: "Идём в разведку", next: 5 }
+          ]
+        },
+        5: {
+          title: "🎉 ПОБЕДА!",
+          img: "https://i.pinimg.com/736x/xx/xx/5.jpg",
+          text: "Отряд выполнил задачу! С 23 Февраля! Теперь открывай холодильник и тащи угощение! 🍻",
+          buttons: [] // кнопок нет, это финал
+        }
+      };
+
+      // ==========================================
+      // ДВИГАТЕЛЬ КВЕСТА (этот код не трогаем)
+      // ==========================================
+      let currentStep = 1;
+
+      function render(stepId) {
+        const step = steps[stepId];
+        if (!step) return;
+
+        document.getElementById("step-counter").textContent =
+          `Шаг ${stepId} из ${Object.keys(steps).length}`;
+        document.getElementById("title").textContent = step.title;
+        document.getElementById("image").src = step.img;
+        document.getElementById("text").textContent = step.text;
+
+        const btnContainer = document.getElementById("buttons");
+        btnContainer.innerHTML = "";
+        step.buttons.forEach((btn) => {
+          const button = document.createElement("button");
+          button.className = "btn";
+          button.textContent = btn.text;
+          button.onclick = () => {
+            if (btn.next === stepId) {
+              alert("Неверно! Попробуй ещё раз.");
+            } else {
+              currentStep = btn.next;
+              render(currentStep);
+            }
+          };
+          btnContainer.appendChild(button);
+        });
+      }
+
+      // Запускаем игру
+      render(1);
+    </script>
+  </body>
+  </html>
